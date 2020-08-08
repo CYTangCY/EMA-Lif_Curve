@@ -1,26 +1,26 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+class EMA:
 
-fig = plt.figure(figsize = (20, 10))
-plt.title('moving_average')
-plt.xlabel('time')
-plt.ylabel('firing_rate')
+	def __init__(self, time_EMA, rate_EMA):
+		self.time_EMA = time_EMA
+		self.rate_EMA = rate_EMA
 
-current = 200
-alpha = float(input("inpur alpha: "))
-time = [0,0]
-firing_rate = [0,0]
-new_firing_rate = 0
-old_firing_rate = firing_rate[-1]
+	def claculate(self):
+		current_EMA = 200
+		alpha = 0.05
+		new_firing_rate = 0
+		old_firing_rate = self.rate_EMA[-1]
 
-while new_firing_rate <= 199.999:
-	new_firing_rate = (current*alpha)+(old_firing_rate*(1-alpha))
-	firing_rate.append(new_firing_rate)
-	old_firing_rate = firing_rate[-1]
-	time.append(time[-1]+1)
+		while new_firing_rate <= 199.9:
+			new_firing_rate = (current_EMA*alpha) + (old_firing_rate * (1 - alpha))
+			old_firing_rate = self.rate_EMA[-1]
+			self.rate_EMA.append(new_firing_rate)
+			self.time_EMA.append(self.time_EMA[-1]+1)
 
-print(firing_rate)
-plt.grid(True)
-plt.plot(time, firing_rate,'ro-')
-plt.show()
+	def time(self):
+		return self.time_EMA
+
+	def rate(self):
+		return self.rate_EMA
+
+
+
