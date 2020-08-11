@@ -9,12 +9,16 @@ class EMA:
 		alpha = 0.05
 		new_firing_rate = 0
 		old_firing_rate = self.rate_EMA[-1]
+		time_count = 0
+		time_ca = 0
 
 		while new_firing_rate <= 199.9:
 			new_firing_rate = (current_EMA*alpha) + (old_firing_rate * (1 - alpha))
 			old_firing_rate = self.rate_EMA[-1]
+			time_count +=1
+			time_ca = time_count 
 			self.rate_EMA.append(new_firing_rate)
-			self.time_EMA.append(self.time_EMA[-1]+1)
+			self.time_EMA.append(time_ca)
 
 	def time(self):
 		return self.time_EMA
