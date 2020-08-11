@@ -3,16 +3,16 @@ import numpy as np
 import time
 class Lif_neuron:
 
-	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif):
+	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif):
 		self.time_Lif = time_Lif
 		self.rate_Lif = rate_Lif
 		self.v_Lif = v_Lif
-		self.firingList_Lif = firingList_Lif	  		
+		self.firingList_Lif = firingList_Lif
+		self.g_Lif = g_Lif	  		
+		self.threshold_Lif = threshold_Lif
 	def claculate(self):
-		g = 0.009
-		rest = 100
-		threshold = 200
-		reset = 30
+		rest = 0
+		reset = 0
 		noise = 0
 		current_Lif = 50
 		##time_count = 0
@@ -20,42 +20,43 @@ class Lif_neuron:
 		##Lrate = 0
 		vValue = rest
 		is_firing = False
-		unit_count = 1499
+		unit_count = 50
 		time_count = 0
 		spike_count = 0
 		fireRateValue = 0
-		while time_count <= 1500:
+		while time_count < 6:
 			#vValue = rest
 			#self.v_Lif.append(vValue)
-			vValue += -g * (vValue - rest) + current_Lif + random.randint(0, noise) - noise / 2	
+			vValue += -self.g_Lif * (vValue - rest) + current_Lif + random.randint(0, noise) - noise / 2	
 			time_count = unit_count /50
 			unit_count += 1
 			self.v_Lif.append(vValue) 	
 			##self.rate_Lif.append(Lrate)
 			#self.time_Lif.append(time_count)
 			#self.rate_Lif.append(Lrate)
-			if vValue >= threshold and is_firing == False:	
+			if vValue >= self.threshold_Lif and is_firing == False:	
 				is_firing = True
 				spike_count += 1
 				vValue = reset
 				fireRateValue = spike_count / time_count
 				self.firingList_Lif.append(fireRateValue)
 				#self.v_Lif.append(vValue)
-			if vValue < threshold and is_firing == True:
+			if vValue < self.threshold_Lif and is_firing == True:
 				is_firing = False
 				#self.v_Lif.append(vValue)
 				
 			##Lrate = spike_count
 			self.v_Lif.append(vValue)
-			"""
-			if Lrate >= 1:
-				self.rate_Lif.append(None)
-			else:
-				self.rate_Lif.append(Lrate)
-			"""	
-			#if time_count >= 3000:
+			if fireRateValue >=48.40106589:
+				break
+		if len(self.firingList_Lif) > 0:
+				self.rate_Lif.append(max(self.firingList_Lif))	
+		if len(self.firingList_Lif) <= 0:
+				self.rate_Lif.append(0)
+			#if len(self.v_Lif) >= 30:
 			#	break
-			
+#		print('MaxRate: ',round(self.firingList_Lif[-1],1))
+#		print('MaxTime: ',len(self.firingList_Lif))	
 
 	def time(self):
 		return self.time_Lif
@@ -68,3 +69,9 @@ class Lif_neuron:
 	
 	def firing_status(self):
 		return self.firingList_Lif
+		
+	def th(self):
+		return self.threshold_Lif
+
+	def g(self):
+		return self.g_Lif
