@@ -14,10 +14,11 @@ Lift = []
 Lifr = []
 _v = []
 FiringStatus = []
-g = 0.009
+g = 0.09
 th = 40
+timePo = []
 
-_Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, g, th)
+_Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, g, th, timePo)
 _Lif.claculate()
 #_Lif.firing_rate()
 #print(_v)
@@ -26,8 +27,8 @@ fig =  plt.figure(figsize =(15,10))
 plt.title('Lif_firingrate')
 plt.xlabel('time')
 plt.ylabel('rate')
-plt.plot(_EMA.rate(), '--')
-plt.plot(_Lif.firing_status(), '--')
+plt.plot(EMAr, '--')
+plt.plot(Lift, FiringStatus, '--')
 plt.grid(True)
 #fig.savefig('th87', format = 'jpg')
 print('gelak: ',g)
@@ -45,7 +46,7 @@ fig2 = plt.figure(figsize = (15, 10))
 plt.title('Lif_potential')
 plt.xlabel('time')
 plt.ylabel('potential')
-plt.plot( _Lif.v())
+plt.plot(timePo, _v)
 plt.grid(True)
 
 

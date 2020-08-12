@@ -3,13 +3,14 @@ import numpy as np
 import time
 class Lif_neuron:
 
-	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, th_Lif):
+	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, th_Lif, timePo_Lif):
 		self.time_Lif = time_Lif
 		self.rate_Lif = rate_Lif
 		self.v_Lif = v_Lif
 		self.firingList_Lif = firingList_Lif	  
 		self.g_Lif = g_Lif
 		self.th_Lif = th_Lif
+		self.timePo_Lif = timePo_Lif
 	def claculate(self):
 		rest = 10
 		reset = 0
@@ -21,29 +22,32 @@ class Lif_neuron:
 		time_count = 0
 		spike_count = 0
 		fireRateValue = 0
-		while time_count <= 2:
+		while time_count <= 100:
 			#vValue = rest
 			#self.v_Lif.append(vValue)
 			vValue += -self.g_Lif * (vValue - rest) + current_Lif + random.randint(0, noise) - noise / 2	
-			time_count = unit_count /50
+			time_count = unit_count * (3/5)
 			unit_count += 1
-			self.v_Lif.append(vValue) 	
+			self.v_Lif.append(vValue)
+			self.timePo_Lif.append(time_count) 	
 			##self.rate_Lif.append(Lrate)
 			#self.time_Lif.append(time_count)
 			#self.rate_Lif.append(Lrate)
 			if vValue >= self.th_Lif and is_firing == False:	
 				is_firing = True
 				spike_count += 1
-				vValue = reset
-				fireRateValue = spike_count / time_count
-				self.firingList_Lif.append(fireRateValue)
+				vValue = reset	
 				#self.v_Lif.append(vValue)
 			if vValue < self.th_Lif and is_firing == True:
 				is_firing = False
 				#self.v_Lif.append(vValue)
 				
 			##Lrate = spike_count
+			fireRateValue = spike_count / time_count
+			self.firingList_Lif.append(fireRateValue)
+			self.time_Lif.append(time_count)
 			self.v_Lif.append(vValue)
+			self.timePo_Lif.append(time_count)
 			"""
 			if Lrate >= 1:
 				self.rate_Lif.append(None)
