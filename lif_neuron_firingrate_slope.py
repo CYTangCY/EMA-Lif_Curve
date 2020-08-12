@@ -12,21 +12,21 @@ class Lif_neuron:
 		self.th_Lif = th_Lif
 		self.timePo_Lif = timePo_Lif
 	def claculate(self):
-		rest = 10
-		reset = 0
-		noise = 8
-		current_Lif = 50
+		rest = 100
+		reset = 30
+		noise = 0
+		current_Lif = 5
 		vValue = rest
 		is_firing = False
 		unit_count = 50
 		time_count = 0
 		spike_count = 0
 		fireRateValue = 0
-		while time_count <= 100:
+		while time_count <= 1:
 			#vValue = rest
 			#self.v_Lif.append(vValue)
 			vValue += -self.g_Lif * (vValue - rest) + current_Lif + random.randint(0, noise) - noise / 2	
-			time_count = unit_count * (3/5)
+			time_count = (unit_count /1500)
 			unit_count += 1
 			self.v_Lif.append(vValue)
 			self.timePo_Lif.append(time_count) 	

@@ -15,14 +15,14 @@ Lifr = []
 _v = []
 FiringStatus = []
 g = 0.09
-th = 40
+th = 150
 timePo = []
 
 _Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, g, th, timePo)
 _Lif.claculate()
 #_Lif.firing_rate()
 #print(_v)
-
+"""
 fig =  plt.figure(figsize =(15,10))
 plt.title('Lif_firingrate')
 plt.xlabel('time')
@@ -34,13 +34,16 @@ plt.grid(True)
 print('gelak: ',g)
 print('threshold: ',th)
 """
-fig1 = plt.figure(figsize = (50, 30))
-plt.title('???')
-plt.xlabel('????')
+
+fig1 = plt.figure(figsize = (15, 10))
+plt.title('firingrate')
+plt.xlabel('time')
 plt.ylabel('rate')
 plt.plot(_Lif.firing_status(), 'bo-')
 plt.grid(True)
-"""
+print('gleak',g)
+print('threshold',th)
+
 
 fig2 = plt.figure(figsize = (15, 10))
 plt.title('Lif_potential')
