@@ -12,46 +12,53 @@ _EMA.claculate()
 
 Lift = []
 Lifr = []
-_v = []
-FiringStatus = []
-g = 0.09
-th = 150
-timePo = []
+v = []
+FiringList = []
+#g_List = []
+LifPt = []
+noise = 0
+current = 50
+th = 225
+g = 0.285
+rest = 50
+reset = 30
 
-_Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, g, th, timePo)
-_Lif.claculate()
+"""
+for g in np.arange(0.35, 0.2, -0.001):
+	g_List.append(_g)
+	_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
+	_Lif.claculate()
 #_Lif.firing_rate()
 #print(_v)
-"""
-fig =  plt.figure(figsize =(15,10))
-plt.title('Lif_firingrate')
-plt.xlabel('time')
-plt.ylabel('rate')
-plt.plot(EMAr, '--')
-plt.plot(Lift, FiringStatus, '--')
-plt.grid(True)
-#fig.savefig('th87', format = 'jpg')
-print('gelak: ',g)
-print('threshold: ',th)
-"""
 
-fig1 = plt.figure(figsize = (15, 10))
-plt.title('firingrate')
+	fig =  plt.figure(figsize =(10,5))
+	plt.title('LifMaxrate')
+	plt.xlabel('g_Value')
+	plt.ylabel('Max_rate')
+	#plt.plot(EMAr, '--', label = 'EMA_curve')
+	plt.plot(g_List,Lifr, 'ro', label = 'g1-0.01')
+	plt.legend()
+	plt.grid(True)
+	fig.savefig('g1-0.01', format = 'jpg')
+"""
+_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
+_Lif.claculate()
+
+fig1 = plt.figure(figsize = (10, 5))
+plt.title('firing_rateLif')
 plt.xlabel('time')
 plt.ylabel('rate')
-plt.plot(_Lif.firing_status(), 'bo-')
+plt.plot(Lift, FiringList, 'b-')
 plt.grid(True)
 print('gleak',g)
 print('threshold',th)
 
-
-fig2 = plt.figure(figsize = (15, 10))
+fig2 = plt.figure(figsize = (10, 5))
 plt.title('Lif_potential')
 plt.xlabel('time')
 plt.ylabel('potential')
-plt.plot(timePo, _v)
+plt.plot(LifPt, v)
 plt.grid(True)
-
 
 plt.show()
 
