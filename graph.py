@@ -14,10 +14,10 @@ Lift = []
 Lifr = []
 _v = []
 FiringStatus = []
-_g = 0.09
-_th = 87
+g = 0.009
+th = 40
 
-_Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, _g, _th)
+_Lif = Lif_neuron(Lift, Lifr, _v, FiringStatus, g, th)
 _Lif.claculate()
 #_Lif.firing_rate()
 #print(_v)
@@ -29,8 +29,9 @@ plt.ylabel('rate')
 plt.plot(_EMA.rate(), '--')
 plt.plot(_Lif.firing_status(), '--')
 plt.grid(True)
-fig.savefig('th87', format = 'jpg')
-
+#fig.savefig('th87', format = 'jpg')
+print('gelak: ',g)
+print('threshold: ',th)
 """
 fig1 = plt.figure(figsize = (50, 30))
 plt.title('???')
