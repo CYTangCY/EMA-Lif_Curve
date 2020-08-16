@@ -16,6 +16,7 @@ class Lif_neuron:
 		self.threshold_Lif = threshold_Lif
 		self.noise_Lif = noise_Lif
 		self.potential_timecount = potential_timecount
+
 	@jit
 	def claculate(self):
 		vValue = self.rest_Lif
