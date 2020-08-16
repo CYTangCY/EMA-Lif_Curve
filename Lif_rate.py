@@ -1,8 +1,8 @@
 import random
 import numpy as np
 import time
+from numba import jit
 class Lif_neuron:
-
 
 	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif, potential_timecount, rest_Lif, reset_Lif, current_Lif, noise_Lif):
 		self.time_Lif = time_Lif
@@ -16,7 +16,7 @@ class Lif_neuron:
 		self.threshold_Lif = threshold_Lif
 		self.noise_Lif = noise_Lif
 		self.potential_timecount = potential_timecount
-
+	@jit
 	def claculate(self):
 		vValue = self.rest_Lif
 		is_firing = False
@@ -47,46 +47,39 @@ class Lif_neuron:
 			self.potential_timecount.append(time_count)
 			self.time_Lif.append(time_count)
 	
-		if len(self.firingList_Lif) > 0:
-				self.rate_Lif.append(max(self.firingList_Lif))	
-
-		if len(self.firingList_Lif) <= 0:
-				self.rate_Lif.append(0)
-			#if len(self.v_Lif) >= 30:
-			#	break
 #		print('MaxRate: ',round(self.firingList_Lif[-1],1))
 #		print('MaxTime: ',len(self.firingList_Lif))	
 
-
+	@jit
 	def time(self):
 		return self.time_Lif
-
+	@jit
 	def rate(self):
 		return self.rate_Lif
-
+	@jit
 	def v(self):
 		return self.v_Lif
-	
+	@jit
 	def firing_List(self):
 		return self.firingList_Lif
-		
+	@jit	
 	def th(self):
 		return self.threshold_Lif
-
+	@jit
 	def g(self):
 		return self.g_Lif
-
+	@jit
 	def rest(self):
 		return self.rest_Lif
-
+	@jit
 	def reset(self):
 		return self.reset_Lif
-
+	@jit
 	def current(self):
 		return self.current_Lif
-
+	@jit
 	def noise(self):
 		return self.noise_Lif
-
+	@jit
 	def Pt(self):
 		return self.potential_timecount

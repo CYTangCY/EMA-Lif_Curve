@@ -1,7 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from EMA_2 import EMA
-from lif_neuron_firingrate_slope import Lif_neuron
+import pandas as pd
+from pandas import DataFrame
+from EMA_curve import EMA
+from Lif_rate import Lif_neuron
 
 EMAt = []
 EMAr = []
@@ -14,32 +16,54 @@ Lift = []
 Lifr = []
 v = []
 FiringList = []
-#g_List = []
+th_list = []
+g_list = []
+rest_list = []
+reset_list = []
 LifPt = []
+maxfr_list = []
 noise = 0
 current = 50
-th = 225
-g = 0.285
-rest = 50
-reset = 30
+th = 0
+g = 0
+rest = 0
+reset = 0
+for g in np.arange(0.48, 0.5, 0.003):
+	for rest in range(10, 50, 10):
+		for reset in range(10, 50, 10):	
+			for th in range (50, 230, 20):
+				_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
+				_Lif.claculate()
+				if max(FiringList) <= 1450:	
+					maxfr_list.append(round(max(FiringList),3))
+					reset_list.append(reset)
+					rest_list.append(rest)
+					g_list.append(g)
+					th_list.append(th)
+				print('g: ',g)
+				print('th: ',th)
+				print('rest: ',rest)
+				print('reset: ',reset)
+				print('maxfr: ',max(FiringList))	
+	dict_Lif = {"gValue":g_list, "thValue":th_list, "restValue":rest_list, "resetValue":reset_list, "maxfr":maxfr_list}
+	df_Lif = pd.DataFrame(dict_Lif)
+	print(df_Lif.info)
+df_Lif.to_csv('test.csv', index=False, header=False)
+	
 
-"""
-for g in np.arange(0.35, 0.2, -0.001):
-	g_List.append(_g)
-	_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
-	_Lif.claculate()
-#_Lif.firing_rate()
-#print(_v)
+			#_Lif.firing_rate()
+			#print(_v)
 
-	fig =  plt.figure(figsize =(10,5))
-	plt.title('LifMaxrate')
-	plt.xlabel('g_Value')
-	plt.ylabel('Max_rate')
-	#plt.plot(EMAr, '--', label = 'EMA_curve')
-	plt.plot(g_List,Lifr, 'ro', label = 'g1-0.01')
-	plt.legend()
-	plt.grid(True)
-	fig.savefig('g1-0.01', format = 'jpg')
+				#fig =  plt.figure(figsize =(10,5))
+				#plt.title('LifMaxrate')
+				#plt.xlabel('g_Value')
+				#plt.ylabel('Max_rate')
+				#plt.plot(EMAr, '--', label = 'EMA_curve')
+				#plt.plot(g_List,Lifr, 'ro', label = 'g1-0.01')
+				#plt.legend()
+				#plt.grid(True)
+				#fig.savefig('g1-0.01', format = 'jpg')
+
 """
 _Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
 _Lif.claculate()
@@ -59,6 +83,6 @@ plt.xlabel('time')
 plt.ylabel('potential')
 plt.plot(LifPt, v)
 plt.grid(True)
-
-plt.show()
+"""
+#plt.show()
 
