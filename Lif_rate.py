@@ -25,24 +25,51 @@ class Lif_neuron:
 		time_count = 0
 		spike_count = 0
 		fireRateValue = 0
-		
+		re_period = 30
+		re_count = 30	
+
 		while time_count <= 1:
 
-			vValue += -self.g_Lif * (vValue - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2	
+			"""eulerQQ
+
+			self.vValue += -self.g_Lif * (self.vValue - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2	
+				
+			"""
+#RK4
+			dtt = 0.0
+			arg = 0.0
+			tmpv = vValue + dtt * arg
+			fa1 = -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2 
+			dtt = 0.5
+			arg = fa1
+			tmpv = vValue + dtt * arg
+			fa2 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2
+			dtt = 0.5
+			arg = fa2
+			tmpv = vValue + dtt * arg
+			fa3 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2
+			dtt = 1.0
+			arg = fa3
+			tmpv = vValue + dtt * arg
+			fa4 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2  
+
+			vValue += (fa1 + 2 * fa2 + 2 * fa3 + fa4) / 6.0
+			
 			time_count = unit_count / 1500
 			unit_count += 1
 			self.v_Lif.append(vValue)
-			self.potential_timecount.append(time_count) 	
-
+			self.potential_timecount.append(time_count) 
+			print(vValue)
+			
 			if vValue >= self.threshold_Lif and is_firing == False:	
 				is_firing = True
 				spike_count += 1
 				vValue = self.reset_Lif
 				fireRateValue = spike_count / time_count
-
+				
 			if vValue < self.threshold_Lif and is_firing == True:
 				is_firing = False
-				
+
 			self.v_Lif.append(vValue)
 			self.firingList_Lif.append(fireRateValue)
 			self.potential_timecount.append(time_count)
