@@ -23,32 +23,32 @@ reset_list = []
 LifPt = []
 maxfr_list = []
 noise = 0
-current = 50
+current = 0.5
+rest = -70
+reset = -55
 
-for rest in range(50, 101, 10):
-	for reset in range(0, 51, 10):	
-		for th in range (50, 231, 20):
-			for g in np.arange(0.6, 1, 0.005):
-				_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
-				_Lif.claculate()
-				if max(FiringList) <= 100 and max(FiringList) != 0:	
-					maxfr_list.append(round(max(FiringList),3))
-					reset_list.append(reset)
-					rest_list.append(rest)
-					g_list.append(g)
-					th_list.append(th)
-				"""
-				print('g: ',g)
-				print('th: ',th)
-				print('rest: ',rest)
-				print('reset: ',reset)
-				print('maxfr: ',max(FiringList))	
-				"""			
-				FiringList.clear()
+for th in range (-50, -45, 1):
+	for g in np.arange(0, 1, 0.001):
+		_Lif = Lif_neuron(Lift, Lifr, v, FiringList, g, th, LifPt, rest, reset, current, noise)
+		_Lif.claculate()
+		if max(FiringList) <= 100 and max(FiringList) != 0:	
+			maxfr_list.append(round(max(FiringList),3))
+			reset_list.append(reset)
+			rest_list.append(rest)
+			g_list.append(g)
+			th_list.append(th)
+		"""
+		print('g: ',g)
+		print('th: ',th)
+		print('rest: ',rest)
+		print('reset: ',reset)
+		print('maxfr: ',max(FiringList))	
+		"""			
+		FiringList.clear()
 	dict_Lif = {"gValue":g_list, "thValue":th_list, "restValue":rest_list, "resetValue":reset_list, "maxfr":maxfr_list}
 	df_Lif = pd.DataFrame(dict_Lif)
 	print(df_Lif.info)	
-df_Lif.to_csv('test0.6~1.csv', index=False, header=False)
+df_Lif.to_csv('T0.1~1.csv', index=False, header=False)
 	
 
 			#_Lif.firing_rate()
