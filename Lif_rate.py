@@ -4,7 +4,7 @@ import time
 from numba import jit
 class Lif_neuron:
 
-	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif, potential_timecount, rest_Lif, reset_Lif, current_Lif, noise_Lif):
+	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif, potential_timecount, rest_Lif, reset_Lif, current_Lif, noise_Lif, c_Lif):
 		self.time_Lif = time_Lif
 		self.rate_Lif = rate_Lif
 		self.v_Lif = v_Lif
@@ -16,60 +16,47 @@ class Lif_neuron:
 		self.threshold_Lif = threshold_Lif
 		self.noise_Lif = noise_Lif
 		self.potential_timecount = potential_timecount
+		self.c_Lif = c_Lif
 
 	@jit
 	def claculate(self):
 		vValue = self.rest_Lif
 		is_firing = False
-		unit_count = 50
+		unit_count = 0
 		time_count = 0
 		spike_count = 0
 		fireRateValue = 0
-		re_period = 30
-		re_count = 30	
-
+		re_period = 10
+		re_count = 0	
+		tau = 0
 		while time_count <= 1:
 
-			"""eulerQQ
-
-			self.vValue += -self.g_Lif * (self.vValue - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2	
-				
-			"""
-#RK4
-			dtt = 0.0
-			arg = 0.0
-			tmpv = vValue + dtt * arg
-			fa1 = -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2 
-			dtt = 0.5
-			arg = fa1
-			tmpv = vValue + dtt * arg
-			fa2 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2
-			dtt = 0.5
-			arg = fa2
-			tmpv = vValue + dtt * arg
-			fa3 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2
-			dtt = 1.0
-			arg = fa3
-			tmpv = vValue + dtt * arg
-			fa4 =  -self.g_Lif * (tmpv - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2  
-
-			vValue += (fa1 + 2 * fa2 + 2 * fa3 + fa4) / 6.0
-			
+#euler
+			#if re_count == 0:
+			vValue += (-self.g_Lif * (vValue - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2) / self.c_Lif		
 			time_count = unit_count / 1500
 			unit_count += 1
 			self.v_Lif.append(vValue)
 			self.potential_timecount.append(time_count) 
-			print(vValue)
-			
+			#print('potential:',vValue)	
+			tau = self.c_Lif / self.g_Lif
+			#print('tau:',tau)
+			#else:
+				#re_count -= 1
+				#time_count = unit_count / 1500
+				#unit_count += 1
+				#self.v_Lif.append(vValue)
+				#self.potential_timecount.append(time_count)
+
 			if vValue >= self.threshold_Lif and is_firing == False:	
 				is_firing = True
 				spike_count += 1
+				#self.current_Lif = 0
 				vValue = self.reset_Lif
 				fireRateValue = spike_count / time_count
-				
+				#re_count = re_period
 			if vValue < self.threshold_Lif and is_firing == True:
-				is_firing = False
-
+				is_firing = False	
 			self.v_Lif.append(vValue)
 			self.firingList_Lif.append(fireRateValue)
 			self.potential_timecount.append(time_count)
