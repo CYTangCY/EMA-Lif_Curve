@@ -2,9 +2,10 @@ import random
 import numpy as np
 import time
 from numba import jit
+from EMA_curve import EMA
 class Lif_neuron:
 
-	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif, potential_timecount, rest_Lif, reset_Lif, current_Lif, noise_Lif, c_Lif):
+	def __init__(self, time_Lif, rate_Lif, v_Lif, firingList_Lif, g_Lif, threshold_Lif, potential_timecount, rest_Lif, reset_Lif, noise_Lif, c_Lif):
 		self.time_Lif = time_Lif
 		self.rate_Lif = rate_Lif
 		self.v_Lif = v_Lif
@@ -12,7 +13,6 @@ class Lif_neuron:
 		self.g_Lif = g_Lif	  		
 		self.rest_Lif = rest_Lif
 		self.reset_Lif = reset_Lif
-		self.current_Lif = current_Lif
 		self.threshold_Lif = threshold_Lif
 		self.noise_Lif = noise_Lif
 		self.potential_timecount = potential_timecount
@@ -29,11 +29,18 @@ class Lif_neuron:
 		re_period = 10
 		re_count = 0	
 		tau = 0
-		while time_count <= 1:
+		i = 0
+		EMAcurrentList = []
+		_EMA = EMA(EMAcurrentList)
+		_EMA.claculate()
+		print(EMAcurrentList)	
+
+		while time_count <= 2:
 
 #euler
+			current_Lif = EMAcurrentList[i]
 			#if re_count == 0:
-			vValue += (-self.g_Lif * (vValue - self.rest_Lif) + self.current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2) / self.c_Lif		
+			vValue += (-self.g_Lif * (vValue - self.rest_Lif) + current_Lif + random.randint(0, self.noise_Lif) - self.noise_Lif / 2) / self.c_Lif		
 			time_count = unit_count / 1500
 			unit_count += 1
 			self.v_Lif.append(vValue)
@@ -47,6 +54,9 @@ class Lif_neuron:
 				#unit_count += 1
 				#self.v_Lif.append(vValue)
 				#self.potential_timecount.append(time_count)
+
+			if unit_count % 51 == 0:
+				i += 1
 
 			if vValue >= self.threshold_Lif and is_firing == False:	
 				is_firing = True
@@ -62,7 +72,7 @@ class Lif_neuron:
 			self.potential_timecount.append(time_count)
 			self.time_Lif.append(time_count)
 	
-#		print('MaxRate: ',round(self.firingList_Lif[-1],1))
+		print('MaxRate: ',round(self.firingList_Lif[-1],1))
 #		print('MaxTime: ',len(self.firingList_Lif))	
 
 	@jit
