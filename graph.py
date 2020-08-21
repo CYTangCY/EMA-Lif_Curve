@@ -17,9 +17,9 @@ LifPt = []
 maxfr_list = []
 noise = 0
 current = 0.5
-rest = -55
-reset = -55
-g = 0.008
+rest = -65
+reset = -68
+g = 0.12
 th = -50
 c = 1
 
