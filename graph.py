@@ -16,11 +16,11 @@ reset_list = []
 LifPt = []
 maxfr_list = []
 noise = 0
-current = 3.3
-rest = -70
-reset = -68
+current = 10
+rest = -60
+reset = -58
 th = -50
-g = 0.15
+g = 1
 """
 for th in range (-50, -45, 1):
 	for g in np.arange(0, 1, 0.001):
